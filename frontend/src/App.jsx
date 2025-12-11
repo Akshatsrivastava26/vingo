@@ -3,7 +3,7 @@ import { Route, Routes } from 'react-router-dom'
 import SignUp from './pages/SignUp'
 import SignIn from './pages/SignIn'
 
-export default function App() {
+function App() {
   return (
     <Route>
       <Route path='/signup' element={<SignUp />}/>
@@ -11,3 +11,5 @@ export default function App() {
     </Route>
   )
 }
+
+export default App
