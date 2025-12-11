@@ -1,6 +1,6 @@
 import User from "../models/user.model.js";
 import bcrypt from 'bcryptjs';
-import {genToken} from '../utils/tokenGen.js';
+import genToken from '../utils/token.js';
 export const signUp=async(req,res)=>{
     try {
         const {fullName,email,password,mobile,role}=req.body;
@@ -57,10 +57,20 @@ export const signIn=async(req,res)=>{
             maxAge:7*24*60*60*1000,
             httpOnly:true,
         })
+
         return res.status(201).json(user)
         
     } catch (error) {
         return res.status(500).json(`sign In error ${error}`);
     } 
+}
+
+export const signOut=async(req,res)=>{
+    try {
+        res.clearCookie("token");
+        return res.status(200).json({message:"Signout successful"});
+    } catch (error) {
+        return res.status(500).json(`sign Out error ${error}`);
+    }
 }
 
