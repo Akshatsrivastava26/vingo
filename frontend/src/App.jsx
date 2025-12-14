@@ -5,10 +5,10 @@ import SignIn from './pages/SignIn'
 
 function App() {
   return (
-    <Route>
+    <Routes>
       <Route path='/signup' element={<SignUp />}/>
       <Route path='/signip' element={<SignIn />}/>
-    </Route>
+    </Routes>
   )
 }
 
