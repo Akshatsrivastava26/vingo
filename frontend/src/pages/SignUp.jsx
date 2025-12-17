@@ -30,6 +30,7 @@ function SignUp() {
           <label htmlFor="mobile" className='block text-gray-700 font-medium mb-1'>Mobile Number</label>
           <input type="mobile" className='w-full border rounded-lg px-3 py-2 focus:outline-none focus:border-orange-500' placeholder='Enter your Mobile Number' style={{border: `1px solid ${borderColor}`}} />
         </div>
+        
 
       </div>
     </div>
