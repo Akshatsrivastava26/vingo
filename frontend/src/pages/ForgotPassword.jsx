@@ -4,6 +4,9 @@ import { useNavigate } from 'react-router-dom';
 function ForgotPassword() {
   const [step, setStep] = React.useState(1);
   const [email, setEmail] = useState("");
+  const [otp, setOtp] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const navigate=useNavigate();
   return (
     <div className='flex w-full items-center justify-center min-h-screen p-4 bg-[#fff9f6]'>
@@ -26,11 +29,25 @@ function ForgotPassword() {
          {step === 2 && 
          <div>
           {/* Otp */}
-        <div className='mb-6'>
-          <label htmlFor="otp" className='block text-gray-700 font-medium mb-1'>Otp</label>
-          <input type="text" className='w-full border-[1px] border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:border-orange-500' placeholder='Enter your Otp' onChange={(e)=>setEmail(e.target.value)} value={email}/>
+         <div className='mb-6'>
+          <label htmlFor="otp" className='block text-gray-700 font-medium mb-1'>OTP</label>
+          <input type="text" className='w-full border-[1px] border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:border-orange-500' placeholder='Enter your OTP' onChange={(e)=>setOtp(e.target.value)} value={otp}/>
         </div>
-        <button className="w-full  mt-4 flex items-center justify-center gap-2 border rounded-lg px-4 py-2 transition duration-200 bg-[#ff4d2d] text-white hover:bg-[#e64323] cursor-pointer">Send Otp</button>
+        <button className="w-full  mt-4 flex items-center justify-center gap-2 border rounded-lg px-4 py-2 transition duration-200 bg-[#ff4d2d] text-white hover:bg-[#e64323] cursor-pointer">Verify</button>
+         </div>}
+
+         {step === 3 && 
+         <div>
+          {/* Verify */}
+         <div className='mb-6'>
+          <label htmlFor="newPassword" className='block text-gray-700 font-medium mb-1'>New Password</label>
+          <input type="text" className='w-full border-[1px] border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:border-orange-500' placeholder='Enter New Password' onChange={(e)=>setNewPassword(e.target.value)} value={newPassword}/>
+        </div>
+        <div className='mb-6'>
+          <label htmlFor="ConfirmPassword" className='block text-gray-700 font-medium mb-1'>Confirm Password</label>
+          <input type="text" className='w-full border-[1px] border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:border-orange-500' placeholder='Enter Confirm Password' onChange={(e)=>setConfirmPassword(e.target.value)} value={confirmPassword}/>
+        </div>
+        <button className="w-full  mt-4 flex items-center justify-center gap-2 border rounded-lg px-4 py-2 transition duration-200 bg-[#ff4d2d] text-white hover:bg-[#e64323] cursor-pointer">Reset Password</button>
          </div>}
 
       </div>
