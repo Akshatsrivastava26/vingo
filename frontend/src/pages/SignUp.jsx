@@ -6,6 +6,8 @@ import { FaRegEyeSlash } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import axios from 'axios';
 import { serverUrl } from '../App.jsx';
+import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { auth } from '../../firebase.js';
 
 function SignUp() {
   const primaryColor = "#ff4d2d";
@@ -36,6 +38,15 @@ function SignUp() {
       
     }
   }
+
+  const handleGoogleAuth=async()=>{
+    if(!mobileNumber){
+      return alert("Please enter your mobile number before signing up with Google");
+    }
+    const provider=new GoogleAuthProvider()
+    const result=await signInWithPopup(auth,provider);
+    console.log(result);  
+  };
   return (
     <div className='min-h-screen w-full flex items-center justify-center p-4'style={{background:bgColor}}>
       <div className={`bg-white rounded-xl shadow-lg w-full max-w-md p-8 border-[1px]`} style={{border:`1px solid${borderColor}>`}}>
@@ -86,7 +97,7 @@ function SignUp() {
         </div>
         <button className="w-full  mt-4 flex items-center justify-center gap-2 border rounded-lg px-4 py-2 transition duration-200 bg-[#ff4d2d] text-white hover:bg-[#e64323] cursor-pointer" onClick={handleSignUp}>Sign Up</button>
 
-        <button className='w-full mt-4 flex items-center justify-center gap-2 border rounded-lg px-4 py-2 transition duration-200 border-gray-400 hover:bg-gray-100 cursor-pointer'>
+        <button className='w-full mt-4 flex items-center justify-center gap-2 border rounded-lg px-4 py-2 transition duration-200 border-gray-400 hover:bg-gray-100 cursor-pointer' onClick={handleGoogleAuth}>
           <FcGoogle size={20}/>
           <span>Sign Up with Google</span>
           </button>
