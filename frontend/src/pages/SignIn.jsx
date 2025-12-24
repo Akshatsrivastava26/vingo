@@ -6,6 +6,8 @@ import { FaRegEyeSlash } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import axios from 'axios';
 import { serverUrl } from '../App.jsx';
+import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { auth } from '../../firebase.js';
 
 function SignIn() {
   const primaryColor = "#ff4d2d";
@@ -29,7 +31,21 @@ function SignIn() {
       console.error("Signin error:",error);
       
     }
-  }
+  };
+
+  const handleGoogleAuth=async()=>{
+    const provider=new GoogleAuthProvider()
+    const result=await signInWithPopup(auth,provider);
+    try {
+      const {data}= await axios.post(`${serverUrl}/api/auth/google-auth`, {
+        email: result.user.email,
+      },{withCredentials:true});
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+      
+    } 
+  };
   return (
     <div className='min-h-screen w-full flex items-center justify-center p-4'style={{background:bgColor}}>
       <div className={`bg-white rounded-xl shadow-lg w-full max-w-md p-8 border-[1px]`} style={{border:`1px solid${borderColor}>`}}>
@@ -39,14 +55,14 @@ function SignIn() {
         {/* email */}
         <div className='mb-4'>
           <label htmlFor="email" className='block text-gray-700 font-medium mb-1'>Email</label>
-          <input type="email" className='w-full border rounded-lg px-3 py-2 focus:outline-none focus:border-orange-500' placeholder='Enter your Email' style={{border: `1px solid ${borderColor}`}} onChange={(e)=>setEmail(e.target.value)} value={email}/>
+          <input type="email" className='w-full border rounded-lg px-3 py-2 focus:outline-none focus:border-orange-500' placeholder='Enter your Email' style={{border: `1px solid ${borderColor}`}} onChange={(e)=>setEmail(e.target.value)} value={email} required/>
         </div>
 
         {/* password */}
         <div className='mb-4'>
           <label htmlFor="password" className='block text-gray-700 font-medium mb-1'>Password</label>
           <div className='relative'>
-            <input type={`${showPassword ? "text" : "password"}`} className='w-full border rounded-lg px-3 py-2 focus:outline-none focus:border-orange-500' placeholder='Enter your Password' style={{border: `1px solid ${borderColor}`}} onChange={(e)=>setPassword(e.target.value)} value={password}/>
+            <input type={`${showPassword ? "text" : "password"}`} className='w-full border rounded-lg px-3 py-2 focus:outline-none focus:border-orange-500' placeholder='Enter your Password' style={{border: `1px solid ${borderColor}`}} onChange={(e)=>setPassword(e.target.value)} value={password} required/>
             <button className='absolute right-3 cursor-pointer top-[14px] text-gray-500' onClick={()=>setShowPassword(prev=>!prev)}>{!showPassword?<FaRegEye />:<FaRegEyeSlash />}</button>
           </div>
         </div>
@@ -56,7 +72,7 @@ function SignIn() {
 
         <button className="w-full  mt-4 flex items-center justify-center gap-2 border rounded-lg px-4 py-2 transition duration-200 bg-[#ff4d2d] text-white hover:bg-[#e64323] cursor-pointer" onClick={handleSignIn}>Sign In</button>
 
-        <button className='w-full mt-4 flex items-center justify-center gap-2 border rounded-lg px-4 py-2 transition duration-200 border-gray-400 hover:bg-gray-100 cursor-pointer'>
+        <button className='w-full mt-4 flex items-center justify-center gap-2 border rounded-lg px-4 py-2 transition duration-200 border-gray-400 hover:bg-gray-100 cursor-pointer' onClick={handleGoogleAuth}>
           <FcGoogle size={20}/>
           <span>Sign In with Google</span>
           </button>

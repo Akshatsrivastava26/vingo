@@ -21,6 +21,7 @@ function SignUp() {
   const [email, setEmail] = useState("");
   const [mobileNumber, setMobileNumber] = useState("");
   const [password, setPassword] = useState("");
+  const [error , setError] = useState("");
 
   const handleSignUp=async () => {
     try {
@@ -32,20 +33,30 @@ function SignUp() {
         role
       },{withCredentials:true});
       console.log("Signup success:",result.data);
-      
+      setError("");
     } catch (error) {
-      console.error("Signup error:",error);
-      
+      setError(error.response.data.message);
     }
   }
 
   const handleGoogleAuth=async()=>{
     if(!mobileNumber){
-      return alert("Please enter your mobile number before signing up with Google");
+      return setError("Please enter your mobile number before signing up with Google");
     }
     const provider=new GoogleAuthProvider()
     const result=await signInWithPopup(auth,provider);
-    console.log(result);  
+    try {
+      const {data}= await axios.post(`${serverUrl}/api/auth/google-auth`, {
+        fullName: result.user.displayName,
+        email: result.user.email,
+        mobileNumber,
+        role,
+      },{withCredentials:true});
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+      
+    } 
   };
   return (
     <div className='min-h-screen w-full flex items-center justify-center p-4'style={{background:bgColor}}>
@@ -56,26 +67,26 @@ function SignUp() {
         {/* fullName */}
         <div className='mb-4'>
           <label htmlFor="fullName" className='block text-gray-700 font-medium mb-1'>Full Name</label>
-          <input type="text" className='w-full border rounded-lg px-3 py-2 focus:outline-none focus:border-orange-500' placeholder='Enter your Full Name' style={{border: `1px solid ${borderColor}`}} onChange={(e)=>setFullName(e.target.value)} value={fullName}/>
+          <input type="text" className='w-full border rounded-lg px-3 py-2 focus:outline-none focus:border-orange-500' placeholder='Enter your Full Name' style={{border: `1px solid ${borderColor}`}} onChange={(e)=>setFullName(e.target.value)} value={fullName} required/>
         </div>
 
         {/* email */}
         <div className='mb-4'>
           <label htmlFor="email" className='block text-gray-700 font-medium mb-1'>Email</label>
-          <input type="email" className='w-full border rounded-lg px-3 py-2 focus:outline-none focus:border-orange-500' placeholder='Enter your Email' style={{border: `1px solid ${borderColor}`}} onChange={(e)=>setEmail(e.target.value)} value={email}/>
+          <input type="email" className='w-full border rounded-lg px-3 py-2 focus:outline-none focus:border-orange-500' placeholder='Enter your Email' style={{border: `1px solid ${borderColor}`}} onChange={(e)=>setEmail(e.target.value)} value={email} required/>
         </div>
 
         {/* mobile */}
         <div className='mb-4'>
           <label htmlFor="mobile" className='block text-gray-700 font-medium mb-1'>Mobile Number</label>
-          <input type="mobile" className='w-full border rounded-lg px-3 py-2 focus:outline-none focus:border-orange-500' placeholder='Enter your Mobile Number' style={{border: `1px solid ${borderColor}`}} onChange={(e)=>setMobileNumber(e.target.value)} value={mobileNumber}/>
+          <input type="mobile" className='w-full border rounded-lg px-3 py-2 focus:outline-none focus:border-orange-500' placeholder='Enter your Mobile Number' style={{border: `1px solid ${borderColor}`}} onChange={(e)=>setMobileNumber(e.target.value)} value={mobileNumber} required/>
         </div>
 
         {/* password */}
         <div className='mb-4'>
           <label htmlFor="password" className='block text-gray-700 font-medium mb-1'>Password</label>
           <div className='relative'>
-            <input type={`${showPassword ? "text" : "password"}`} className='w-full border rounded-lg px-3 py-2 focus:outline-none focus:border-orange-500' placeholder='Enter your Password' style={{border: `1px solid ${borderColor}`}} onChange={(e)=>setPassword(e.target.value)} value={password}/>
+            <input type={`${showPassword ? "text" : "password"}`} className='w-full border rounded-lg px-3 py-2 focus:outline-none focus:border-orange-500' placeholder='Enter your Password' style={{border: `1px solid ${borderColor}`}} onChange={(e)=>setPassword(e.target.value)} value={password} required/>
             <button className='absolute right-3 cursor-pointer top-[14px] text-gray-500' onClick={()=>setShowPassword(prev=>!prev)}>{!showPassword?<FaRegEye />:<FaRegEyeSlash />}</button>
           </div>
         </div>
@@ -96,6 +107,8 @@ function SignUp() {
           </div>
         </div>
         <button className="w-full  mt-4 flex items-center justify-center gap-2 border rounded-lg px-4 py-2 transition duration-200 bg-[#ff4d2d] text-white hover:bg-[#e64323] cursor-pointer" onClick={handleSignUp}>Sign Up</button>
+
+        <p className='text-red-500 text-center my-10px'>*{error}</p>
 
         <button className='w-full mt-4 flex items-center justify-center gap-2 border rounded-lg px-4 py-2 transition duration-200 border-gray-400 hover:bg-gray-100 cursor-pointer' onClick={handleGoogleAuth}>
           <FcGoogle size={20}/>
