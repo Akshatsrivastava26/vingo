@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { data, useNavigate } from 'react-router-dom';
 import { FaRegEye } from "react-icons/fa";
 import { FaRegEyeSlash } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
@@ -9,6 +9,8 @@ import { serverUrl } from '../App.jsx';
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { auth } from '../../firebase.js';
 import { ClipLoader } from "react-spinners";
+import { useDispatch } from 'react-redux';
+import { setUserData } from '../redux/userSlice.js';
 
 
 function SignUp() {
@@ -25,6 +27,7 @@ function SignUp() {
   const [password, setPassword] = useState("");
   const [error , setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const dispatch=useDispatch();
 
   const handleSignUp=async () => {
     setLoading(true);
@@ -36,7 +39,7 @@ function SignUp() {
         password,
         role
       },{withCredentials:true});
-      console.log("Signup success:",result.data);
+      dispatch(setUserData(data));
       setError("");
       setLoading(false);
     } catch (error) {
@@ -58,7 +61,7 @@ function SignUp() {
         mobileNumber,
         role,
       },{withCredentials:true});
-      console.log(data);
+      dispatch(setUserData(data));
     } catch (error) {
       console.log(error);
       
@@ -102,7 +105,8 @@ function SignUp() {
           <label htmlFor="role" className='block text-gray-700 font-medium mb-1'>Role</label>
           <div className='flex gap-2'>
             {['user','owner','deliveryBoy'].map((r)=>(
-              <button className='flex-1 border rounded-lg px-3 py-2 text-center font-medium transition-colors cursor-pointer'onClick={()=>setRole(r)} 
+              
+              <button key={r} className='flex-1 border rounded-lg px-3 py-2 text-center font-medium transition-colors cursor-pointer'onClick={()=>setRole(r)} 
               style={
                 role==r?
                 {backgroundColor:primaryColor,color:'white'}
