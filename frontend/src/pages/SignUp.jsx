@@ -35,7 +35,7 @@ function SignUp() {
       console.log("Signup success:",result.data);
       setError("");
     } catch (error) {
-      setError(error.response.data.message);
+      setError(error?.response?.data?.message);
     }
   }
 
@@ -108,7 +108,7 @@ function SignUp() {
         </div>
         <button className="w-full  mt-4 flex items-center justify-center gap-2 border rounded-lg px-4 py-2 transition duration-200 bg-[#ff4d2d] text-white hover:bg-[#e64323] cursor-pointer" onClick={handleSignUp}>Sign Up</button>
 
-        <p className='text-red-500 text-center my-10px'>*{error}</p>
+        {error && <p className='text-red-500 text-center my-2'>*{error}</p>}
 
         <button className='w-full mt-4 flex items-center justify-center gap-2 border rounded-lg px-4 py-2 transition duration-200 border-gray-400 hover:bg-gray-100 cursor-pointer' onClick={handleGoogleAuth}>
           <FcGoogle size={20}/>

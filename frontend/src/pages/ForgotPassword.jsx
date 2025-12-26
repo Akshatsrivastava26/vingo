@@ -9,15 +9,17 @@ function ForgotPassword() {
   const [otp, setOtp] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [error , setError] = useState("");
   const navigate=useNavigate();
 
   const handleSendOtp=async()=>{
     try {
       const result=await axios.post(`${serverUrl}/api/auth/send-otp`,{email},{withCredentials:true});
       console.log(result);
+      setError("");
       setStep(2);
     } catch (error) {
-      console.log(error);
+      setError(error?.response?.data?.message);
       
     }
   }
@@ -26,9 +28,10 @@ function ForgotPassword() {
     try {
       const result=await axios.post(`${serverUrl}/api/auth/verify-otp`,{email, otp},{withCredentials:true});
       console.log(result);
+      setError("");
       setStep(3);
     } catch (error) {
-      console.log(error);
+      setError(error?.response?.data?.message);
       
     }
   }
@@ -40,10 +43,11 @@ function ForgotPassword() {
     }
     try {
       const result=await axios.post(`${serverUrl}/api/auth/reset-password`,{email, newPassword},{withCredentials:true});
+      setError("");
       console.log(result);
       navigate("/signin");
     } catch (error) {
-      console.log(error);
+      setError(error?.response?.data?.message);
       
     }
   }
@@ -63,6 +67,8 @@ function ForgotPassword() {
           <input type="email" className='w-full border-[1px] border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:border-orange-500' placeholder='Enter your Email' onChange={(e)=>setEmail(e.target.value)} value={email} required/>
         </div>
         <button className={`w-full  mt-4 flex items-center justify-center gap-2 border rounded-lg px-4 py-2 transition duration-200 bg-[#ff4d2d] text-white hover:bg-[#e64323] cursor-pointer`} onClick={handleSendOtp}>Send Otp</button>
+
+        {error && <p className='text-red-500 text-center my-2'>*{error}</p>}
          </div>}
 
          {step === 2 && 
@@ -73,6 +79,7 @@ function ForgotPassword() {
           <input type="text" className='w-full border-[1px] border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:border-orange-500' placeholder='Enter your OTP' onChange={(e)=>setOtp(e.target.value)} value={otp} required/>
         </div>
         <button className={`w-full  mt-4 flex items-center justify-center gap-2 border rounded-lg px-4 py-2 transition duration-200 bg-[#ff4d2d] text-white hover:bg-[#e64323] cursor-pointer`} onClick={handleVerifyOtp}>Verify</button>
+        {error && <p className='text-red-500 text-center my-2'>*{error}</p>}
          </div>}
 
          {step === 3 && 
@@ -87,6 +94,7 @@ function ForgotPassword() {
           <input type="text" className='w-full border-[1px] border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:border-orange-500' placeholder='Enter Confirm Password' onChange={(e)=>setConfirmPassword(e.target.value)} value={confirmPassword} required/>
         </div>
         <button className={`w-full  mt-4 flex items-center justify-center gap-2 border rounded-lg px-4 py-2 transition duration-200 bg-[#ff4d2d] text-white hover:bg-[#e64323] cursor-pointer`} onClick={handleResetPassword}>Reset Password</button>
+        {error && <p className='text-red-500 text-center my-2'>*{error}</p>}
          </div>}
 
       </div>
