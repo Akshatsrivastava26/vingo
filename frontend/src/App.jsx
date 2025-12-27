@@ -7,9 +7,11 @@ import ForgotPassword from './pages/ForgotPassword'
 export const serverUrl="http://localhost:8000";
 import useGetCurrentUser from './hooks/useGetCurrentUser'
 import { useSelector } from 'react-redux'
+import useGetCity from './hooks/useGetCity'
 
 function App() {
   useGetCurrentUser();
+  useGetCity();
   const {userData}=useSelector((state)=>state.user);
   return (
     <Routes>
