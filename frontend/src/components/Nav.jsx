@@ -3,12 +3,27 @@ import { FaLocationDot } from "react-icons/fa6";
 import { IoIosSearch } from "react-icons/io";
 import { FiShoppingCart } from "react-icons/fi";
 import { RxCross2 } from "react-icons/rx";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { serverUrl } from "../App";
+import axios from "axios";
+import { setUserData } from "../redux/userSlice";
 
 function Nav() {
   const { userData,city } = useSelector((state) => state.user);
   const [showInfo, setShowInfo] = React.useState(false);
   const [showSearch, setShowSearch] = React.useState(false);
+  const dispatch=useDispatch();
+  
+  const handleLogOut = async() =>{
+    try {
+      const result=await axios.get(`${serverUrl}/api/auth/signout`,{withCredentials:true});
+      dispatch(setUserData(null));
+    } catch (error) {
+      console.log(error);
+
+      
+    }
+  }
   return (
     <div className="w-full h-[80px] flex items-center justify-between md:justify-center gap-[30px] px-[20px] fixed top-0 z-[9999] bg-[#fff9f6] overflow-visible">
 
@@ -53,7 +68,7 @@ function Nav() {
         {showInfo && <div className="fixed top-[80px] right-[10px] md:right-[10%] lg:right-[25%] w-[180px] bg-white shadow-2xl rounded-xl p-[20px] flex flex-col gap-[10px] z-[9999]">
             <div className="text-[17px] font-semibold">{userData?.fullName}</div>
             <div className="md:hidden text-[#ff4d2d] font-semibold cursor-pointer">My Orders</div>
-            <div className="text-[#ff4d2d] font-semibold cursor-pointer">Log Out</div>
+            <div className="text-[#ff4d2d] font-semibold cursor-pointer" onClick={handleLogOut}>Log Out</div>
 
         </div>} 
         
