@@ -17,7 +17,8 @@ function useGetCurrentUser() {
                 
             }
         }
-    }, [])
+        fetchUser();
+    }, []);
 }
 
 export default useGetCurrentUser
