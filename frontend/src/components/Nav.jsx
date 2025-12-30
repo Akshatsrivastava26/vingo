@@ -63,7 +63,7 @@ function Nav() {
           My Orders
         </button>
         <div className="w-[40px] h-[40px] rounded-full flex item-center justify-center bg-[#ff4d2d] text-white text-[18px] shadow-xl font-semibold cursor-pointer" onClick={()=>setShowInfo(prev=>!prev)}>
-          {userData?.fullName?.slice(0, 1)}
+          {userData?.fullName.slice(0, 1)}
         </div>
         {showInfo && <div className="fixed top-[80px] right-[10px] md:right-[10%] lg:right-[25%] w-[180px] bg-white shadow-2xl rounded-xl p-[20px] flex flex-col gap-[10px] z-[9999]">
             <div className="text-[17px] font-semibold">{userData?.fullName || "User"}</div>
