@@ -1,8 +1,9 @@
 import express from "express";
-import { createEditShop } from "../controllers/shop.controllers";
-import isAuth from "../middleware/isAuth";
-import { addItem } from "../controllers/item.controllers";
-import { upload } from "../middleware/multer";
+// import { createEditShop } from "../controllers/shop.controllers";
+import isAuth from "../middleware/isAuth.js";
+import { addItem } from "../controllers/item.controllers.js";
+import { upload } from "../middleware/multer.js";
+import { editItem } from "../controllers/item.controllers.js";
 
 
 
