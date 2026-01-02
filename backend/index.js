@@ -5,6 +5,9 @@ import connectDb from "./config/db.js";
 import cookieParser from "cookie-parser";
 import authRouter from "./routes/authroutes.js";
 import userRouter from "./routes/userroutes.js";
+import shopRouter from "./routes/shoproutes.js";
+import itemRouter from "./routes/itemroutes.js";
+
 
 import cors from "cors";
 const app = express();
@@ -17,6 +20,8 @@ app.use(express.json());
 app.use(cookieParser());
 app.use("/api/auth",authRouter)
 app.use("/api/user",userRouter);
+app.use("/api/shop",shopRouter);
+app.use("/api/item",itemRouter);
 
 
 app.get("/",(req,res)=>{
