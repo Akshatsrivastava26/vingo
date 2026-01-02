@@ -8,6 +8,7 @@ import { serverUrl } from "../App";
 import axios from "axios";
 import { setUserData } from "../redux/userSlice";
 import { FaPlus } from "react-icons/fa6";
+import { TbReceipt2 } from "react-icons/tb";
 
 function Nav() {
   const { userData, city } = useSelector((state) => state.user);
@@ -78,7 +79,7 @@ function Nav() {
             />
           ))}
 
-        {userData.role == "owner" && <>
+        {userData.role == "owner" ? <>
           <button className="hidden md:flex items-center gap-1 p-2 cursor-pointer rounded-full bg-[#ff4d2d]/10 text-[#ff4d2d]">
             <FaPlus size={20}/>
             <span>Add Food Item</span>
@@ -87,21 +88,31 @@ function Nav() {
           <button className="md:hidden flex items-center p-2 cursor-pointer rounded-full bg-[#ff4d2d]/10 text-[#ff4d2d]">
             <FaPlus size={20}/>
           </button>
-
-        </>}
-
-        {userData.role == "user" && (
-          <div className="relative cursor-pointer">
+          <div className="hidden md:flex items-center gap-2 cursor-pointer relative px-3 py-1 rounded-lg bg-[#ff4d2d]/10 text-[#ff4d2d] font-medium" >
+            <TbReceipt2 size={20}/>
+            <span>My Orders</span>
+            <span className="absolute -right-2 -top-2 text-xs font-bold text-white bg-[#ff4d2d] rounded-full px-[6px] py-[1px]">0</span>
+          </div>
+          <div className="md:hidden flex items-center gap-2 cursor-pointer relative px-3 py-1 rounded-lg bg-[#ff4d2d]/10 text-[#ff4d2d] font-medium" >
+            <TbReceipt2 size={20}/>
+            <span className="absolute -right-2 -top-2 text-xs font-bold text-white bg-[#ff4d2d] rounded-full px-[6px] py-[1px]">0</span>
+          </div>
+        </>: (<>
+        <div className="relative cursor-pointer">
             <FiShoppingCart size={25} className="text-[#ff4d2d]" />
             <span className="absolute right-[-9px] top-[-12px] text-[#ff4d2d]">
               0
             </span>
           </div>
-        )}
+        
 
         <button className="hidden md:block px-3 py-1 rounded-lg bg-[#ff4d2d]/10 text-[#ff4d2d] text-sm font-medium">
           My Orders
         </button>
+        
+        </>)}
+
+          
         <div
           className="w-[40px] h-[40px] rounded-full flex item-center justify-center bg-[#ff4d2d] text-white text-[18px] shadow-xl font-semibold cursor-pointer"
           onClick={() => setShowInfo((prev) => !prev)}
