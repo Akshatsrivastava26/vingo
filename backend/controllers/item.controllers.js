@@ -1,6 +1,6 @@
 import Shop from "../models/shop.model.js";
 import Item from "../models/item.model.js";
-import { uploadOnCloudinary } from "../utils/cloudinary.utils.js";
+import { uploadOnCloudinary } from "../utils/cloudinary.js";
 
 
 export const addItem=async (req,res)=>{

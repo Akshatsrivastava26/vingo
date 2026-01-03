@@ -1,5 +1,6 @@
-import { v2 as cloudinary } from 'cloudinary'
-const dotenv = require('dotenv');
+import { v2 as cloudinary } from 'cloudinary';
+import dotenv from "dotenv";
+dotenv.config();
 import fs from 'fs';
 
 const uploadOnCloudinary = async (file) => {
