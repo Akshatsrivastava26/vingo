@@ -10,7 +10,7 @@ export const addItem=async (req,res)=>{
         if(req.file){
             image=await uploadOnCloudinary(req.file.path);
         }
-        const shop=await shop.findOne({owner:req.userId});
+        const shop=await Shop.findOne({owner:req.userId});
         if(!shop){
             return res.status(400).json({message:"Shop not found"});
         }
