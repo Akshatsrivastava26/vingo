@@ -48,7 +48,7 @@ function OwnerDashboard() {
             <FaUtensils className='text-[#ff4d2d] w-16 h-16 sm:w-20 sm:h-20 mb-4'/>
             <h2 className='text-xl sm:text-2xl font-bold text-gray-800 mb-2'>Add Your Food Item</h2>
             <p className='text-gray-600 mb-4 text-sm sm:text-base'>Share your delicious creations with our customersby adding them to the menu.</p>
-            <button className='bg-[#ff4d2d] text-white px-5 sm:px-6 py-2 rounded-full font-medium shadow-md hover:bg-orange-600 transition-colors duration-200' onClick={()=>navigate('/add-form')}>Add Food</button>
+            <button className='bg-[#ff4d2d] text-white px-5 sm:px-6 py-2 rounded-full font-medium shadow-md hover:bg-orange-600 transition-colors duration-200' onClick={()=>navigate('/add-item')}>Add Food</button>
           </div>
         </div>
       </div>
