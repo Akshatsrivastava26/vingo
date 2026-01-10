@@ -30,19 +30,19 @@ function Nav() {
     }
   };
   return (
-    <div className="w-full h-[80px] flex items-center justify-between md:justify-center gap-[30px] px-[20px] fixed top-0 z-[9999] bg-[#fff9f6] overflow-visible">
+    <div className="w-full h-20 flex items-center justify-between md:justify-center gap-[30px] px-5 fixed top-0 z-9999 bg-[#fff9f6] overflow-visible">
       {showSearch && userData.role == "user" && (
-        <div className="w-[90%] h-[70px] bg-white shadow-xl rounded-lg items-center gap-[20px] flex fixed top-[80px] left-[5%] md:hidden">
-          <div className="flex items-center w-[30%] overflow-hidden gap-[10px] px-[10px] border-r-[2px] border-gray-400">
+        <div className="w-[90%] h-[70px] bg-white shadow-xl rounded-lg items-center gap-5 flex fixed top-20 left-[5%] md:hidden">
+          <div className="flex items-center w-[30%] overflow-hidden gap-2.5 px-2.5 border-r-2 border-gray-400">
             <FaLocationDot size={25} className="text-[#ff4d2d]" />
             <div className="w-[80%] truncate text-gray-600">{currentCity}</div>
           </div>
-          <div className="w-[80%] flex items-center gap-[10px]">
+          <div className="w-[80%] flex items-center gap-2.5">
             <IoIosSearch size={25} className="text-[#ff4d2d]" />
             <input
               type="text"
               placeholder="search delicious food..."
-              className="px-[10px] text-gray-700 outline-0 w-full"
+              className="px-2.5 text-gray-700 outline-0 w-full"
             />
           </div>
         </div>
@@ -50,17 +50,17 @@ function Nav() {
 
       <h1 className="text-3xl font-bold m-2 text-[#ff4d2d]">Vingo</h1>
       {userData.role == "user" && (
-        <div className="md:w-[60%] lg:w-[40%] h-[70px] bg-white shadow-xl rounded-lg items-center gap-[20px] hidden md:flex">
-          <div className="flex items-center w-[30%] overflow-hidden gap-[10px] px-[10px] border-r-[2px] border-gray-400">
+        <div className="md:w-[60%] lg:w-[40%] h-[70px] bg-white shadow-xl rounded-lg items-center gap-5 hidden md:flex">
+          <div className="flex items-center w-[30%] overflow-hidden gap-2.5 px-2.5 border-r-2 border-gray-400">
             <FaLocationDot size={25} className="text-[#ff4d2d]" />
             <div className="w-[80%] truncate text-gray-600">{currentCity}</div>
           </div>
-          <div className="w-[80%] flex items-center gap-[10px]">
+          <div className="w-[80%] flex items-center gap-2.5">
             <IoIosSearch size={25} className="text-[#ff4d2d]" />
             <input
               type="text"
               placeholder="search delicious food..."
-              className="px-[10px] text-gray-700 outline-0 w-full"
+              className="px-2.5 text-gray-700 outline-0 w-full"
             />
           </div>
         </div>
@@ -98,16 +98,16 @@ function Nav() {
           <div className="hidden md:flex items-center gap-2 cursor-pointer relative px-3 py-1 rounded-lg bg-[#ff4d2d]/10 text-[#ff4d2d] font-medium" >
             <TbReceipt2 size={20}/>
             <span>My Orders</span>
-            <span className="absolute -right-2 -top-2 text-xs font-bold text-white bg-[#ff4d2d] rounded-full px-[6px] py-[1px]">0</span>
+            <span className="absolute -right-2 -top-2 text-xs font-bold text-white bg-[#ff4d2d] rounded-full px-1.5 py-px">0</span>
           </div>
           <div className="md:hidden flex items-center gap-2 cursor-pointer relative px-3 py-1 rounded-lg bg-[#ff4d2d]/10 text-[#ff4d2d] font-medium" >
             <TbReceipt2 size={20}/>
-            <span className="absolute -right-2 -top-2 text-xs font-bold text-white bg-[#ff4d2d] rounded-full px-[6px] py-[1px]">0</span>
+            <span className="absolute -right-2 -top-2 text-xs font-bold text-white bg-[#ff4d2d] rounded-full px-1.5 py-px">0</span>
           </div>
         </>: (<>
         <div className="relative cursor-pointer">
             <FiShoppingCart size={25} className="text-[#ff4d2d]" />
-            <span className="absolute right-[-9px] top-[-12px] text-[#ff4d2d]">
+            <span className="absolute right-[-9px] -top-3 text-[#ff4d2d]">
               0
             </span>
           </div>
@@ -121,13 +121,13 @@ function Nav() {
 
           
         <div
-          className="w-[40px] h-[40px] rounded-full flex item-center justify-center bg-[#ff4d2d] text-white text-[18px] shadow-xl font-semibold cursor-pointer"
+          className="w-10 h-10 rounded-full flex item-center justify-center bg-[#ff4d2d] text-white text-[18px] shadow-xl font-semibold cursor-pointer"
           onClick={() => setShowInfo((prev) => !prev)}
         >
-          {userData?.fullName.slice(0, 1)}
+          {userData?.fullName?.slice(0, 1)}
         </div>
         {showInfo && (
-          <div className="fixed top-[80px] right-[10px] md:right-[10%] lg:right-[25%] w-[180px] bg-white shadow-2xl rounded-xl p-[20px] flex flex-col gap-[10px] z-[9999]">
+          <div className="fixed top-20 right-2.5 md:right-[10%] lg:right-[25%] w-[180px] bg-white shadow-2xl rounded-xl p-5 flex flex-col gap-2.5 z-9999">
             <div className="text-[17px] font-semibold">
               {userData?.fullName}
             </div>

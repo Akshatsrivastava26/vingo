@@ -1,17 +1,20 @@
-import React from 'react'
-import { Navigate, Route, Routes } from 'react-router-dom'
-import SignUp from './pages/SignUp'
-import SignIn from './pages/SignIn'
-import Home from './pages/Home'
-import Nav from './components/Nav'
-import ForgotPassword from './pages/ForgotPassword'
-export const serverUrl="http://localhost:8000";
-import useGetCurrentUser from './hooks/useGetCurrentUser'
-import { useSelector } from 'react-redux'
-import useGetCity from './hooks/useGetCity'
-import useGetMyShop from './hooks/useGetMyShop'
-import CreateEditShop from './pages/CreateEditShop'
+import React from "react";
+import { Navigate, Route, Routes } from "react-router-dom";
+import { useSelector } from "react-redux";
 
+import SignUp from "./pages/SignUp";
+import SignIn from "./pages/SignIn";
+import Home from "./pages/Home";
+import ForgotPassword from "./pages/ForgotPassword";
+import CreateEditShop from "./pages/CreateEditShop";
+import AddItem from "./pages/AddItem";
+import Nav from "./components/Nav";
+
+import useGetCurrentUser from "./hooks/useGetCurrentUser";
+import useGetCity from "./hooks/useGetCity";
+import useGetMyShop from "./hooks/useGetMyShop";
+
+export const serverUrl = "http://localhost:8000";
 
 function App() {
   useGetCurrentUser();
@@ -31,22 +34,8 @@ function App() {
     </Routes>
   )
 }
+export default App;
 
-
-export default App
-
-// import React from 'react'
-// import { Navigate, Route, Routes } from 'react-router-dom'
-// import SignUp from './pages/SignUp'
-// import SignIn from './pages/SignIn'
-// import Home from './pages/Home'
-// import ForgotPassword from './pages/ForgotPassword'
-// import Nav from './components/Nav' // ✅ IMPORT NAV
-// export const serverUrl="http://localhost:8000";
-
-// import useGetCurrentUser from './hooks/useGetCurrentUser'
-// import { useSelector } from 'react-redux'
-// import useGetCity from './hooks/useGetCity'
 
 // function App() {
 //   useGetCurrentUser();
