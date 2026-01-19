@@ -5,8 +5,9 @@ function UserDashboard() {
   return (
     <div className='w-full min-h-screen bg-[#fff9f6] flex flex-col items-center'>
       <Nav/>
-      <h1 className='text-2xl font-bold'>User Dashboard</h1>
-
+      <div className='w-full pt-24 px-5'>
+        <h1 className='text-2xl font-bold'>User Dashboard</h1>
+      </div>
     </div>
   )
 }
