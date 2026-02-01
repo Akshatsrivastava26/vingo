@@ -34,7 +34,7 @@ function SignIn() {
         email,
         password,
       },{withCredentials:true});
-      dispatch(setUserData(result.data));
+      dispatch(setUserData({user: result.data}));
       setError("");
       setLoading(false);
       
@@ -51,7 +51,7 @@ function SignIn() {
       const {data}= await axios.post(`${serverUrl}/api/auth/google-auth`, {
         email: result.user.email,
       },{withCredentials:true});
-      dispatch(setUserData(data));
+      dispatch(setUserData({user: data}));
     } catch (error) {
       console.log(error);
       

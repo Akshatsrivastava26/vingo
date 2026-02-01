@@ -17,10 +17,22 @@ import useGetMyShop from "./hooks/useGetMyShop";
 export const serverUrl = "http://localhost:8000";
 
 function App() {
-  useGetCurrentUser();
+  const loading = useGetCurrentUser();
   useGetCity();
   useGetMyShop();
   const {userData}=useSelector((state)=>state.user);
+  
+  if (loading) {
+    return (
+      <div className="w-screen min-h-screen flex justify-center items-center bg-[#fff9f6]">
+        <div className="flex flex-col items-center gap-3">
+          <h1 className="text-3xl font-bold text-[#ff4d2d]">Vingo</h1>
+          <p className="text-gray-600">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+  
   return (
     <Routes>
       <Route path='/signup' element={!userData?<SignUp/>:<Navigate to="/"/>}/>

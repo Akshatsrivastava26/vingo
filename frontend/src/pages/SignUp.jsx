@@ -39,7 +39,7 @@ function SignUp() {
         password,
         role
       },{withCredentials:true});
-      dispatch(setUserData(data));
+      dispatch(setUserData({user: result.data}));
       setError("");
       setLoading(false);
     } catch (error) {
@@ -61,7 +61,7 @@ function SignUp() {
         mobileNumber,
         role,
       },{withCredentials:true});
-      dispatch(setUserData(data));
+      dispatch(setUserData({user: data}));
     } catch (error) {
       console.log(error);
       

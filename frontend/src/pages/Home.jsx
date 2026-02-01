@@ -29,6 +29,7 @@ import { useSelector } from "react-redux";
 import UserDashboard from "../components/UserDashboard";
 import OwnerDashboard from "../components/OwnerDashboard";
 import DeliveryBoy from "../components/DeliveryBoy";
+import Nav from "../components/Nav";
 
 function Home() {
   
@@ -40,17 +41,20 @@ function Home() {
 
   if (!actualUser) {
     return (
-      <div className="w-screen min-h-screen pt-[100px] flex justify-center items-center">
-        <p>Loading...</p>
+      <div className="w-screen min-h-screen flex justify-center items-center bg-[#fff9f6]">
+        <p className="text-gray-600">Loading...</p>
       </div>
     );
   }
 
   return (
-    <div className="w-screen min-h-screen pt-[100px] flex flex-col items-center bg-[#fff9f6]">
-      {actualUser.role === "user" && <UserDashboard />}
-      {actualUser.role === "owner" && <OwnerDashboard />}
-      {actualUser.role === "deliveryboy" && <DeliveryBoy />}
+    <div className="w-screen min-h-screen flex flex-col bg-[#fff9f6]">
+      <Nav />
+      <div className="pt-20">
+        {actualUser.role === "user" && <UserDashboard />}
+        {actualUser.role === "owner" && <OwnerDashboard />}
+        {actualUser.role === "deliveryboy" && <DeliveryBoy />}
+      </div>
     </div>
   );
 }
