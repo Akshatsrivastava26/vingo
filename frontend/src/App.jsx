@@ -14,7 +14,7 @@ import useGetCurrentUser from "./hooks/useGetCurrentUser";
 import useGetCity from "./hooks/useGetCity";
 import useGetMyShop from "./hooks/useGetMyShop";
 
-export const serverUrl = "http://localhost:8000";
+export const serverUrl = import.meta.env.VITE_BACKEND_URL;
 
 function App() {
   const loading = useGetCurrentUser();
