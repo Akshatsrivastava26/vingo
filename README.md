@@ -1,0 +1,1 @@
+#Food Drlivery Web App This is a food delivery web application that allows users to browse menus, place orders, and track deliveries in real-time. The app is built using modern web technologies to provide a seamless user experience.
