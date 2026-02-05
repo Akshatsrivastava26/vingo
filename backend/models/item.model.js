@@ -8,9 +8,9 @@ const itemSchema = new mongoose.Schema({
         type:String,
         required:true,
     },
-    shope:{
+    shop:{
         type:mongoose.Schema.Types.ObjectId,
-        ref:'Shope',
+        ref:'Shop',
         required:true,
     },
     category:{
@@ -34,7 +34,7 @@ const itemSchema = new mongoose.Schema({
         min:0,
         required:true,
     },
-    foodtype:{
+    foodType:{
         type:String,
         enum:["Veg","Non-Veg"],
         required:true,

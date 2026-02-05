@@ -18,12 +18,13 @@ export const addItem=async (req,res)=>{
         const item = await Item.create({
             name, category,foodType, price, image, shop:shop._id
         })
-
-        shop.item.push(item._id)
-        await shop.save()
-        await shop.populate("items owner")
-        return res.status(201).json(shop)
-
+        
+        // Add item to shop's items array
+        shop.items.push(item._id);
+        await shop.save();
+        
+        // Populate and return the updated shop
+        await shop.populate('owner items');
         return res.status(201).json(shop);
     } catch (error) {
          return res.status(500).json({message:`Add item error ${error}`});
