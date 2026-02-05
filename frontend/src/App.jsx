@@ -49,24 +49,3 @@ function App() {
 export default App;
 
 
-// function App() {
-//   useGetCurrentUser();
-//   useGetCity();
-//   const { userData } = useSelector((state)=>state.user);
-
-//   return (
-//     <>
-//       {/* ✅ NAVBAR RENDERS GLOBALLY */}
-//       {userData && <Nav />}
-
-//       <Routes>
-//         <Route path='/signup' element={!userData ? <SignUp/> : <Navigate to="/"/>}/>
-//         <Route path='/signin' element={!userData ? <SignIn/> : <Navigate to="/"/>}/>
-//         <Route path='/forgot-password' element={!userData ? <ForgotPassword /> : <Navigate to="/signin"/>}/>
-//         <Route path='/' element={userData ? <Home/> : <Navigate to="/signin"/>}/>
-//       </Routes>
-//     </>
-//   )
-// }
-
-// export default App
