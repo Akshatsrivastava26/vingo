@@ -26,17 +26,7 @@ export const createEditShop = async (req, res) => {
     }
 };
 
-// export const editShop = async (req, res) => {
-//     try {
-//         const {name, city, state, address} = req.body;
-//         let image;
-//         if(req.file){
-//             image=await uploadOnCloudinary(req.file.path);
-//         }
-//     } catch (error) {
-        
-//     }
-// };
+
 
 export const getMyShop = async (req, res) => {
     try {
