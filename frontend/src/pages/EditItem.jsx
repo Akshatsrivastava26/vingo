@@ -9,15 +9,18 @@ import { serverUrl } from '../App';
 import axios from 'axios';
 import { setMyShopData } from '../redux/ownerSlice';
 import { useEffect } from 'react';
+// import { set } from 'mongoose';
+
+
 function EditItem() {
     const navigate = useNavigate();
     //const {myShopData}=useSelector((state)=>state.owner);
     const {itemId} = useParams();
     const [currentItem, setCurrentItem]=useState(null);
-    const[name,setName]=useState(currentItem?.name || "");
-    const[price,setPrice]=useState(currentItem?.price || "");
-    const [category,setCategory]=useState(currentItem?.category || "");
-    const[foodType,setFoodType]=useState(currentItem?.foodType || "");    
+    const[name,setName]=useState("");
+    const[price,setPrice]=useState("");
+    const [category,setCategory]=useState("");
+    const[foodType,setFoodType]=useState("");    
     
     const categories=["Snacks",
             "Main Course",
@@ -30,7 +33,7 @@ function EditItem() {
             "Chinese",
             "Fast Food",
             "Others"]
-    const [frontendImage,setFrontendImage]=useState(currentItem?.image || null);
+    const [frontendImage,setFrontendImage]=useState("");
     const [backendImage,setBackendImage]=useState(null);
 
     const dispatch=useDispatch();
@@ -51,7 +54,7 @@ function EditItem() {
             if(backendImage){
                 formData.append("image",backendImage);
             }
-            const result= await axios.post(`${serverUrl}/api/item/add-item`, formData, {withCredentials:true})
+            const result= await axios.post(`${serverUrl}/api/item/edit-item/${itemId}`, formData, {withCredentials:true})
             dispatch(setMyShopData(result.data))
         } catch (error) {
             console.log(error);  
@@ -69,6 +72,14 @@ function EditItem() {
         }
         handleGetItemById();
     },[itemId])
+
+    useEffect(()=>{
+        setName(currentItem?.name || "")
+        setPrice(currentItem?.price || "")
+        setCategory(currentItem?.category || "")
+        setFoodType(currentItem?.foodType || "")
+        setFrontendImage(currentItem?.image || null)
+    },[currentItem])
   return (
     <div className='flex justify-center flex-col items-center p-6 bg-linear-to-br from-orange-50 relative to-white min-h-screen'>
       <div className='absolute top-5 left-5 z-10 mb-2.5' onClick={()=> navigate("/")}>
