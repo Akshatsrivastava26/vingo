@@ -4,6 +4,7 @@ import isAuth from "../middleware/isAuth.js";
 import { addItem } from "../controllers/item.controllers.js";
 import { upload } from "../middleware/multer.js";
 import { editItem } from "../controllers/item.controllers.js";
+import { getItemById } from "../controllers/item.controllers.js";
 
 
 

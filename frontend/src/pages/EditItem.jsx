@@ -1,21 +1,24 @@
 // import React, { useRef } from 'react'
 import * as React from 'react';
 import { IoIosArrowRoundBack } from "react-icons/io";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux'
 import { FaUtensils } from "react-icons/fa";
 import { useState } from 'react';
 import { serverUrl } from '../App';
 import axios from 'axios';
 import { setMyShopData } from '../redux/ownerSlice';
+import { useEffect } from 'react';
 function EditItem() {
     const navigate = useNavigate();
-    // const {myShopData}=useSelector((state)=>state.owner);
+    //const {myShopData}=useSelector((state)=>state.owner);
+    const {itemId} = useParams();
+    const [currentItem, setCurrentItem]=useState(null);
+    const[name,setName]=useState(currentItem?.name || "");
+    const[price,setPrice]=useState(currentItem?.price || "");
+    const [category,setCategory]=useState(currentItem?.category || "");
+    const[foodType,setFoodType]=useState(currentItem?.foodType || "");    
     
-    const[name,setName]=useState("");
-    const[price,setPrice]=useState(0);
-    const [category,setCategory]=useState("");
-    const[foodType,setFoodType]=useState("Veg");    
     const categories=["Snacks",
             "Main Course",
             "Desserts",
@@ -27,7 +30,7 @@ function EditItem() {
             "Chinese",
             "Fast Food",
             "Others"]
-    const [frontendImage,setFrontendImage]=useState(null);
+    const [frontendImage,setFrontendImage]=useState(currentItem?.image || null);
     const [backendImage,setBackendImage]=useState(null);
 
     const dispatch=useDispatch();
@@ -51,10 +54,21 @@ function EditItem() {
             const result= await axios.post(`${serverUrl}/api/item/add-item`, formData, {withCredentials:true})
             dispatch(setMyShopData(result.data))
         } catch (error) {
-            console.log(error);
-            
+            console.log(error);  
         }
     }
+
+    useEffect(()=>{
+        const handleGetItemById=async () =>{
+            try {
+                const result=await axios.get(`${serverUrl}/api/item/get-by-id/${itemId}`,{withCredentials:true});
+                setCurrentItem(result.data);
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        handleGetItemById();
+    },[itemId])
   return (
     <div className='flex justify-center flex-col items-center p-6 bg-linear-to-br from-orange-50 relative to-white min-h-screen'>
       <div className='absolute top-5 left-5 z-10 mb-2.5' onClick={()=> navigate("/")}>
@@ -66,7 +80,7 @@ function EditItem() {
                 <FaUtensils className='text-[#ff4d2d] w-16 h-16'/>
             </div>
             <div className='text-3xl font-extrabold text-gray-900'>
-                Add Food
+                 Edit Food
             </div>
 
         </div>
