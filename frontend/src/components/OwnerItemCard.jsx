@@ -19,7 +19,7 @@ function OwnerItemCard({ data }) {
         <div className='flex item-center justify-between'>
           <div className='text-[#ff4d2d] font-bold'>{data.price}</div>
           <div className='flex items-center gap-2'>
-            <div className='p-2 rounded-full cursor-pointer hover:bg-[#ff4d2d]/10 text-[#ff4d2d]'>
+            <div className='p-2 rounded-full cursor-pointer hover:bg-[#ff4d2d]/10 text-[#ff4d2d]'onClick={()=>navigate(`/edit-item/${data._id}`)}>
             <FaPen size={16} />
             </div>
             <div className='p-2 rounded-full cursor-pointer hover:bg-[#ff4d2d]/10 text-[#ff4d2d]'>
