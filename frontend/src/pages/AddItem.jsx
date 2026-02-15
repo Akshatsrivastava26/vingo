@@ -8,10 +8,11 @@ import { useState } from 'react';
 import { serverUrl } from '../App';
 import axios from 'axios';
 import { setMyShopData } from '../redux/ownerSlice';
+import { ClipLoader } from 'react-spinners';
 function AddItem() {
     const navigate = useNavigate();
     // const {myShopData}=useSelector((state)=>state.owner);
-    
+    const [loading,setLoading]=useState(false);
     const[name,setName]=useState("");
     const[price,setPrice]=useState(0);
     const [category,setCategory]=useState("");
@@ -39,6 +40,7 @@ function AddItem() {
 
     const handleSubmit=async(e)=>{
         e.preventDefault();
+        setLoading(true);
         try {
             const formData=new FormData();
             formData.append("name",name);
@@ -50,8 +52,11 @@ function AddItem() {
             }
             const result= await axios.post(`${serverUrl}/api/item/add-item`, formData, {withCredentials:true})
             dispatch(setMyShopData(result.data))
+            setLoading(false);
+            navigate("/")
         } catch (error) {
             console.log(error);
+            setLoading(false);
             
         }
     }
@@ -108,7 +113,9 @@ function AddItem() {
                     <option value="Non-Veg">Non-Veg</option>
                 </select>
             </div>
-            <button className='w-full bg-[#ff4d2d] text-white px-6 py-3 rounded-lg font-semibold shadow-md hover:bg-orange-600 hover:shadow-lg transition-all duration-200 cursor-pointer'>Save</button>
+            <button className='w-full bg-[#ff4d2d] text-white px-6 py-3 rounded-lg font-semibold shadow-md hover:bg-orange-600 hover:shadow-lg transition-all duration-200 cursor-pointer' disabled={loading}>
+                {loading ? <ClipLoader size={20} color="white" /> : "Save"}
+                </button>
         </form>
 
       </div>
