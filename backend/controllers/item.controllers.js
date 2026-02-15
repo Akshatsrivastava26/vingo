@@ -24,7 +24,10 @@ export const addItem=async (req,res)=>{
         await shop.save();
         
         // Populate and return the updated shop
-        await shop.populate('owner items');
+        (await shop.populate('owner')).populate({owner:req.userId}).populate({
+            path:"items",
+            options:{sort:{updatedAt:-1}}
+        })
         return res.status(201).json(shop);
     } catch (error) {
          return res.status(500).json({message:`Add item error ${error}`});
@@ -45,7 +48,10 @@ export const editItem=async (req,res)=>{
         if(!item){
             return res.status(400).json({message:"Item not found"});
         }
-        const shop=await Shop.findOne({owner:req.userId}).populate("items")
+        const shop=await Shop.findOne({owner:req.userId}).populate({
+            path:"items",
+            options:{sort:{updatedAt:-1}}
+        })
         return res.status(200).json(item);
     } catch (error) {
          return res.status(500).json({message:`Edit item error ${error}`});
