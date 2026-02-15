@@ -9,6 +9,7 @@ import OwnerItemCard from './OwnerItemCard';
 function OwnerDashboard() {
   const {myShopData}=useSelector((state)=>state.owner);
   const navigate = useNavigate();
+
   return (
     <div className='w-full min-h-screen flex flex-col items-center px-5 py-8'>
       {!myShopData &&
