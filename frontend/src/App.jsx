@@ -14,6 +14,7 @@ import Nav from "./components/Nav";
 import useGetCurrentUser from "./hooks/useGetCurrentUser";
 import useGetCity from "./hooks/useGetCity";
 import useGetMyShop from "./hooks/useGetMyShop";
+import useGetShopByCity from "./hooks/useGetShopByCity";
 
 export const serverUrl = import.meta.env.VITE_BACKEND_URL;
 
@@ -21,6 +22,7 @@ function App() {
   const loading = useGetCurrentUser();
   useGetCity();
   useGetMyShop();
+  useGetShopByCity();
   const {userData}=useSelector((state)=>state.user);
   
   if (loading) {
