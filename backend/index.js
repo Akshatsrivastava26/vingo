@@ -1,33 +1,36 @@
-import express from "express"
+import express from "express";
 import dotenv from "dotenv";
 dotenv.config();
 import connectDb from "./config/db.js";
+import path from "path";
 import cookieParser from "cookie-parser";
 import authRouter from "./routes/authroutes.js";
 import userRouter from "./routes/userroutes.js";
 import shopRouter from "./routes/shoproutes.js";
 import itemRouter from "./routes/itemroutes.js";
 
-
 import cors from "cors";
 const app = express();
 const port = process.env.PORT || 8000;
-app.use(cors({
-    origin:"http://localhost:5173",
-    credentials:true,
-}));
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  }),
+);
 
 const __dirname = path.resolve();
 
 app.use(express.json());
 app.use(cookieParser());
-app.use("/api/auth",authRouter)
-app.use("/api/user",userRouter);
-app.use("/api/shop",shopRouter);
-app.use("/api/item",itemRouter);
+app.use("/api/auth", authRouter);
+app.use("/api/user", userRouter);
+app.use("/api/shop", shopRouter);
+app.use("/api/item", itemRouter);
 
+const NODE_ENV = process.env.NODE_ENV;
 // make our app ready for deployment
-if (ENV.NODE_ENV === "production") {
+if (NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "../frontend/dist")));
 
   app.get("/{*any}", (req, res) => {
@@ -35,11 +38,10 @@ if (ENV.NODE_ENV === "production") {
   });
 }
 
-
-app.get("/",(req,res)=>{
-    res.send("Vingo server is running");
+app.get("/", (req, res) => {
+  res.send("Vingo server is running");
 });
 app.listen(port, () => {
-    connectDb()
+  connectDb();
   console.log(`Server is running on port: ${port}`);
 });
