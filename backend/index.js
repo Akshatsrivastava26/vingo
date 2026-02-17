@@ -16,12 +16,24 @@ app.use(cors({
     origin:"http://localhost:5173",
     credentials:true,
 }));
+
+const __dirname = path.resolve();
+
 app.use(express.json());
 app.use(cookieParser());
 app.use("/api/auth",authRouter)
 app.use("/api/user",userRouter);
 app.use("/api/shop",shopRouter);
 app.use("/api/item",itemRouter);
+
+// make our app ready for deployment
+if (ENV.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "../frontend/dist")));
+
+  app.get("/{*any}", (req, res) => {
+    res.sendFile(path.join(__dirname, "../frontend", "dist", "index.html"));
+  });
+}
 
 
 app.get("/",(req,res)=>{
