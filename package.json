@@ -1,0 +1,23 @@
+{
+  "name": "vingo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npm install --prefiex backend && npm install --prefiex frontend && npm run build -prefiex frontend",
+    "start": "npm start --prefiex backend"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Akshatsrivastava26/vingo.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Akshatsrivastava26/vingo/issues"
+  },
+  "homepage": "https://github.com/Akshatsrivastava26/vingo#readme"
+}
