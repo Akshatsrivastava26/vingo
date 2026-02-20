@@ -24,7 +24,7 @@ function App() {
   useGetCity();
   useGetMyShop();
   useGetShopByCity();
-  useGetItemsByCity
+  useGetItemsByCity();
   const {userData}=useSelector((state)=>state.user);
   
   if (loading) {
