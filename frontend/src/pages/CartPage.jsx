@@ -18,7 +18,11 @@ function CartPage() {
             {cartItems?.length==0 ? (
                 <p className='text-gray-500 text-lg text-center'>Your cart is empty</p>
             ):(
-                <div></div>
+                <div className='space-y-4'>
+                    {cartItems?.map((item, index)=>(
+                        <CartItemCard data={item} key={index}/>
+                    ))}
+                </div>
             )}
         </div>
       
