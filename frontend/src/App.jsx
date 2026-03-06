@@ -9,13 +9,16 @@ import ForgotPassword from "./pages/ForgotPassword";
 import CreateEditShop from "./pages/CreateEditShop";
 import AddItem from "./pages/AddItem";
 import EditItem from "./pages/EditItem";
+import CartPage from "./pages/CartPage";
 import Nav from "./components/Nav";
+
 
 import useGetCurrentUser from "./hooks/useGetCurrentUser";
 import useGetCity from "./hooks/useGetCity";
 import useGetMyShop from "./hooks/useGetMyShop";
 import useGetShopByCity from "./hooks/useGetShopByCity";
 import useGetItemsByCity from "./hooks/useGetItemsByCity";
+
 
 export const serverUrl = import.meta.env.VITE_BACKEND_URL;
 
@@ -67,6 +70,10 @@ function App() {
       <Route
         path="/edit-item/:itemId"
         element={userData ? <EditItem /> : <Navigate to="/signin" />}
+      />
+      <Route
+        path="/cart"
+        element={userData ? <CartPage /> : <Navigate to="/signin" />}
       />
     </Routes>
   );

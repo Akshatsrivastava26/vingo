@@ -8,6 +8,7 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import FoodCard from "./FoodCard";
 
+
 function UserDashboard() {
   const { currentCity, shopInMyCity, itemsInMyCity } = useSelector(
     (state) => state.user,
@@ -71,14 +72,14 @@ function UserDashboard() {
     }
 
     return () => {
-      cateScrollRef.current.removeEventListener("scroll", () => {
+      cateScrollRef?.current?.removeEventListener("scroll", () => {
         updateButton(
           cateScrollRef,
           setShowLeftCateButton,
           setShowRightCateButton,
         );
       });
-      shopScrollRef.current.removeEventListener("scroll", () => {
+      shopScrollRef?.current?.removeEventListener("scroll", () => {
         updateButton(
           shopScrollRef,
           setShowLeftShopButton,
