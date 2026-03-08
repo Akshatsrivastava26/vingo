@@ -6,7 +6,7 @@ import CartItemCard from '../components/CartItemCard';
 
 function CartPage() {
     const navigate = useNavigate();
-    const{cartItems, totalAmount} = useSelector((state) => state.user);
+    const{cartItems, totalAmount} = useSelector((state) => state.user)
   return (
     <div className='min-h-screen bg-[#fff9f6] flex justify-center p-6'>
         <div className='w-full max-w-[800px]'>

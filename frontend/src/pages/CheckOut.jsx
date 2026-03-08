@@ -103,11 +103,9 @@ function CheckOut() {
                 <RecenterMap location={location}/>
                 <Marker position={[location?.lat, location?.lon]} draggable eventHandlers={{dragend:onDragEnd}}/>
               </MapContainer>
-
             </div>
           </div>
-
-        </section>
+       </section>
         {/* Payment Section */}
         <section>
           <h2 className="text-lg font-semibold mb-3 text-gray-800">Payment Method</h2>
@@ -121,7 +119,6 @@ function CheckOut() {
                 <p className="font-medium text-gray-800">Cash on Delivery (COD)</p>
                 <p className="text-xs text-gray-500">Pay when you receive your delivery.</p>
               </div>
-
             </div>
             {/* Online Payment Method */}
             <div className={`flex items-center gap-3 rounded-xl border p-4 text-left transition ${paymentMethod === "online" ? "border-[#ff4d2d] bg-orange-50 shadow" : "border-gray-200 hover:border-gray-300"} cursor-pointer`} onClick={() => setPaymentMethod("online")}>
@@ -135,12 +132,8 @@ function CheckOut() {
                 <p className="font-medium text-gray-800">UPI / Credit / Debit Card</p>
                 <p className="text-xs text-gray-500">Pay securely using your preferred method.</p>
               </div>
-
-
             </div>
           </div>
-          
-
         </section>
         {/*Place Order Summary */}
         <section>
