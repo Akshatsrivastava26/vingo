@@ -12,6 +12,7 @@ import EditItem from "./pages/EditItem";
 import CartPage from "./pages/CartPage";
 import CheckOut from "./pages/CheckOut";
 import OrderPlaced from "./pages/OrderPlaced";
+import MyOrders from "./pages/MyOrders";
 import Nav from "./components/Nav";
 
 
@@ -85,6 +86,11 @@ function App() {
         path="/order-placed"
         element={userData ? <OrderPlaced /> : <Navigate to="/signin" />}
       />
+      <Route
+        path="/my-orders"
+        element={userData ? <MyOrders /> : <Navigate to="/signin" />}
+      />
+
     </Routes>
 
 
