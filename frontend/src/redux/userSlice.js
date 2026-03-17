@@ -1,5 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+
+
 const userSlice = createSlice({
     name: 'user',
     initialState: {
@@ -60,8 +62,16 @@ const userSlice = createSlice({
         addMyOrder: (state, action) => {
             state.myOrders=[action.payload,...state.myOrders]
         },
+        updateOrderStatus: (state, action) => {
+            const {orderId, shopId, status} = action.payload;
+            const order=state.myOrders.find(o=>o._id == orderId);
+            if(order){
+                if(order.shopOrders && order.shopOrders.shop._id == shopId){
+                    order.shopOrders.status = status;
+                }
+            } 
+        },
     },
 });
-
-export const { setUserData,setCurrentCity,setCurrentState,setCurrentAddress,setShopInMyCity,setItemsInMyCity,addToCart,updateQuantity,removeCartItem,setMyOrders,addMyOrder } = userSlice.actions;
+export const { setUserData,setCurrentCity,setCurrentState,setCurrentAddress,setShopInMyCity,setItemsInMyCity,addToCart,updateQuantity,removeCartItem,setMyOrders,addMyOrder,updateOrderStatus } = userSlice.actions;
 export default userSlice.reducer;
