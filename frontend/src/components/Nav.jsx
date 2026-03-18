@@ -139,7 +139,7 @@ function Nav() {
             <div className="text-[17px] font-semibold">
               {user?.fullName}
             </div>
-            {userData.role == "user" && <div className="md:hidden text-[#ff4d2d] font-semibold cursor-pointer" onClick={()=>navigate("/my-orders")}>
+            {user?.role == "user" && <div className="md:hidden text-[#ff4d2d] font-semibold cursor-pointer" onClick={()=>navigate("/my-orders")}>
               My Orders
             </div>}
             
