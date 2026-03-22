@@ -2,10 +2,12 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
-import UserOrderCard from "../components/userOrderCard";
+import UserOrderCard from "../components/UserOrderCard";
+import OwnerOrderCard from "../components/OwnerOrderCard";
 
 function MyOrders() {
   const { userData, myOrders } = useSelector((state) => state.user);
+  const userRole = userData?.user?.role;
   const navigate = useNavigate();
   return (
     <div className="w-full min-h-screen bg-[#fff9f6] flex justify-center px-4">
@@ -19,13 +21,13 @@ function MyOrders() {
         </div>
         {/* Orders will be shown here */}
         <div className="space-y-6">
-            {myOrders?.map((order, index) => (
-                userData.role=="user" ? (
-                    <UserOrderCard data={order} key={index} />
-                ) : userData.role == "owner" ? (
-                    <UserOrderCard data={order} key={index} />
-                ) : null
-            ))}
+          {myOrders?.map((order, index) =>
+            userRole == "user" ? (
+              <UserOrderCard data={order} key={index} />
+            ) : userRole == "owner" ? (
+              <OwnerOrderCard data={order} key={index} />
+            ) : null,
+          )}
         </div>
       </div>
     </div>
