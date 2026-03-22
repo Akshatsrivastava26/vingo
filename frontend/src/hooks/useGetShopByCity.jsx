@@ -6,8 +6,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setShopInMyCity } from '../redux/userSlice.js';
 
 
-
-
 function useGetShopByCity() {
     const dispatch=useDispatch();
     const {currentCity}=useSelector(state=>state.user);

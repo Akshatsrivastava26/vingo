@@ -6,13 +6,15 @@ import { RxCross2 } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
 import { serverUrl } from "../App";
 import axios from "axios";
-import { setUserData } from "../redux/userSlice";
+import { clearUserSession } from "../redux/userSlice";
 import { FaPlus } from "react-icons/fa6";
 import { TbReceipt2 } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
+import { setMyShopData } from "../redux/ownerSlice";
 
 function Nav() {
-  const { userData, currentCity, cartItems } = useSelector((state) => state.user) || {};
+  const { userData, currentCity, cartItems } =
+    useSelector((state) => state.user) || {};
   const user = userData?.user;
   const { myShopData } = useSelector((state) => state.owner) || {};
   const [showInfo, setShowInfo] = React.useState(false);
@@ -22,10 +24,16 @@ function Nav() {
 
   const handleLogOut = async () => {
     try {
-      await axios.post(`${serverUrl}/api/auth/signout`, {
-        withCredentials: true,
-      });
-      dispatch(setUserData(null));
+      await axios.post(
+        `${serverUrl}/api/auth/signout`,
+        {},
+        {
+          withCredentials: true,
+        },
+      );
+      dispatch(clearUserSession());
+      dispatch(setMyShopData(null));
+      navigate("/signin");
     } catch (error) {
       console.log(error);
     }
@@ -123,9 +131,13 @@ function Nav() {
         ) : (
           <>
             <div className="relative cursor-pointer">
-              <FiShoppingCart size={25} className="text-[#ff4d2d]" />
+              <FiShoppingCart
+                size={25}
+                className="text-[#ff4d2d]"
+                onClick={() => navigate("/cart")}
+              />
               <span className="absolute right-[-9px] -top-3 text-[#ff4d2d]">
-                0
+                {cartItems?.length || 0}
               </span>
             </div>
 
@@ -137,13 +149,14 @@ function Nav() {
 
         <div
           className="w-10 h-10 rounded-full flex items-center justify-center bg-[#ff4d2d] text-white text-[18px] shadow-xl font-semibold cursor-pointer"
-          onClick={() => setShowInfo((prev) => !prev)}>
+          onClick={() => setShowInfo((prev) => !prev)}
+        >
           {user?.fullName ? user.fullName.slice(0, 1) : "?"}
         </div>
         {showInfo && (
           <div className="fixed top-20 right-2.5 md:right-[10%] lg:right-[25%] w-[180px] bg-white shadow-2xl rounded-xl p-5 flex flex-col gap-2.5 z-50">
             <div className="text-[17px] font-semibold">{user?.fullName}</div>
-            {userData.role == "user" && (
+            {user?.role == "user" && (
               <div className="md:hidden text-[#ff4d2d] font-semibold cursor-pointer">
                 My Orders
               </div>
