@@ -6,10 +6,12 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import { getCurrentOrder } from '../../../backend/controllers/order.controllers';
 import { current } from '@reduxjs/toolkit';
+import DeliveryBoyTracking from './DeliveryBoyTracking';
 
 function DeliveryBoy() {
   const {userData} = useSelector((state)=>state.user);
   const [currentOrder, setCurrentOrder] = useState();
+  const [showOtpBox, setShowOtpBox] = useState(false);
   const [availableAssignments, setAvailableAssignments] =useState(null)
   const getAssignments=async()=>{
     try {
@@ -29,6 +31,10 @@ function DeliveryBoy() {
       console.log("GET CURRENT ORDER ERROR:",error);
       
     }
+  }
+
+  const handelSendOtp=()=>{
+    setShowOtpBox(true);
   }
 
   const acceptOrder=async(assignmentId)=>{
@@ -87,6 +93,17 @@ function DeliveryBoy() {
             <p className='text-sm text-gray-500'>{currentOrder?.deliveryAddress}</p>
             <p className='text-xs text-gray-400 '>{currentOrder.shopOrder.shopOrderItems.length} items | ₹{currentOrder.shopOrder.subtotal}</p>
           </div>
+          {/* order tracking component */}
+          <DeliveryBoyTracking data={currentOrder} />
+          {!showOtpBox ? <button className='mt-4 w-full bg-green-500 text-white font-semibold py-2 px-4 rounded-xl shadow-md hover:bg-green-600 active:scale-95 transition-all duration-200' onClick=
+          {handelSendOtp}>
+            Mark As Delivered
+          </button>:<div className='t-4 p-4 border rounded-xl bg-gray-50'>
+            <p className='text-sm font-semibold mb-2'>Enter OTP send to <span className='text-orange-500'>{currentOrder.cuser.fullName}</span></p>
+            <input type="text" placeholder='Enter OTP' className='w-full border px-3 py-2 rounded-lg mb-3 focus:outline-none focus:ring-2 focus:ring-orange-400' />
+            <button className='w-full bg-orange-500 text-white py-2 rounded-lg font-semibold hover:bg-orange-600 transition-all'>Submit OTP</button>
+          </div>}
+          
           </div>}
         
         
