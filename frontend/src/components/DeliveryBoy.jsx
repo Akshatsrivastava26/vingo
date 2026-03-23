@@ -4,6 +4,7 @@ import axios from 'axios';
 import { serverUrl } from '../App';
 import { useEffect } from 'react';
 import { useState } from 'react';
+import { getCurrentOrder } from '../../../backend/controllers/order.controllers';
 
 function DeliveryBoy() {
   const {userData} = useSelector((state)=>state.user);
@@ -17,10 +18,22 @@ function DeliveryBoy() {
     }
   }
 
+  const getCurrentOrder=async()=>{
+    try {
+      const result=await axios.get(`${serverUrl}/api/order/get-current-order`,{withCredentials:true})
+      console.log("GET CURRENT ORDER RESULT:",result.data);
+    } catch (error) {
+      console.log("GET CURRENT ORDER ERROR:",error);
+      
+    }
+  }
+  }
+
   const acceptOrder=async(assignmentId)=>{
     try {
       const result=await axios.get(`${serverUrl}/api/order/accept-order/${assignmentId}`,{withCredentials:true})
-      console.log("ACCEPT ORDER RESULT:",result.data);
+      console.log(result.data);
+      await getCurrentOrder();
     } catch (error) {
       console.log("ACCEPT ORDER ERROR:",error);
       
@@ -28,8 +41,9 @@ function DeliveryBoy() {
   }
 
   useEffect(()=>{
-    getAssignments();
-  },[userData]);
+    getAssignments()
+    getCurrentOrder()
+  },[userData])
   
   return (
     <div className='w-screen min-h-screen flex flex-col gap-5 items-center bg-[#fff9f6] overflow-y-auto'>

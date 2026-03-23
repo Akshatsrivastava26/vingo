@@ -82,7 +82,7 @@ function OwnerOrderCard({ data }) {
         </span>
         <div className="flex items-center gap-2">
           <select
-            className="rouned-md border px-3 py-1 text-sm focus:outline-none focus:ring-2 border-[#ff4d2d] text-[#ff4d2d]"
+            className="rouned-md border px-3 py-1 text-sm focus:outline-none focus:ring-2 border-[#ff4d2d] text-[#ff4d2d] cursor-pointer"
             value={selectedStatus}
             onChange={(e) => setSelectedStatus(e.target.value)}
           >
@@ -90,7 +90,6 @@ function OwnerOrderCard({ data }) {
             <option value="pending">Pending</option>
             <option value="preparing">Preparing</option>
             <option value="out for delivery">Out for Delivery</option>
-            <option value="delivered">Delivered</option>
           </select>
           <button
             className="px-3 py-1 text-sm rounded-md bg-[#ff4d2d] text-white cursor-pointer disabled:opacity-60"
@@ -112,16 +111,15 @@ function OwnerOrderCard({ data }) {
       {/* when status is out for delivery then show assigned delivery boy details and also show available delivery */}
       {data.shopOrders.status == "out for delivery" && (
         <div className="mt-3 p-2 border rounded-lg text-sm bg-orange-50">
-          <p>Available Delivery Boys:</p>
+          {data.shopOrders.assignedDeliveryBoy ?<p>Assigned Delivery Boys:</p>:<p>Available Delivery Boys:</p>}
           {availableBoys.length > 0 ? (
             availableBoys.map((b) => (
               <div className="text-gray-300">
                 {b.fullname}-{b.mobile}
               </div>
             ))
-          ) : (
-            <div>Waiting for available delivery boys...</div>
-          )}
+          ) :data.shopOrders.assignedDeliveryBoy ?<div>{data.shopOrders.assignedDeliveryBoy.fullName}-{data.shopOrders.assignedDeliveryBoy.mobile}</div>:<div>Waiting for available delivery boys...</div>
+          }
         </div>
       )}
       {/* Grant Total */}
