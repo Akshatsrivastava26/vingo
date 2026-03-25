@@ -396,3 +396,51 @@ export const getOrderById = async (req, res) => {
     return res.status(500).json({ message: `get order by id error ${error.message}` });
   }
 }
+
+// controller for sending otp and to verify otp
+export const sendDeliveryOtp = async (req, res) => {
+  try {
+    const {orderId, shopOrderId}=req.body;
+    const order= await Order.findById(orderId).populate("user");
+    const shopOrder=order.shopOrders.id(shopOrderId);
+    if(!order || !shopOrder){
+      return res.status(400).json({ message: "Enter valid order/shopOrderid" });
+    }
+    const otp= Math.floor(1000 + Math.random() * 9000).toString()
+    shopOrder.deliveryOtp=otp;
+    shopOrder.otpExpires= new Date(Date.now() + 5*60*1000);
+    await order.save();
+    await sendDeliveryOtpMail(order.user, otp);
+    return res.status(200).json({ message: `Otp sent Successfully to ${order?.user?.fullName}`});
+  } catch (error) {
+    return res.status(500).json({ message: `Delivery otp error ${error.message}` });
+    
+  }
+}
+
+// to verify the delivery otp
+export const verifyDeliveryOtp = async (req, res) => {
+  try {
+    const {orderId, shopOrderId, otp} = req.body;
+    const order= await Order.findById(orderId).populate("user");
+    const shopOrder=order.shopOrders.id(shopOrderId);
+    if(!order || !shopOrder){
+      return res.status(400).json({ message: "Enter valid order/shopOrderid" });
+    }
+    if(shopOrder.deliveryOtp!== otp || shopOrder.otpExpires || shopOrder.otpExpires < Date.now()){
+      return res.status(400).json({ message: "Invalid/expired OTP" });
+    }
+    shopOrder.status="delivered";
+    shopOrder.deliveredAt= Date.now();
+    await order.save(); 
+    await DeliveryAssignment.deleteOne({
+      shopOrderId: shopOrder._id,
+      order: order._id,
+      assignedTo: assignedDeliveryBoy
+    })
+    return res.status(200).json({ message: "OTP verified, order marked as delivered"});
+  } catch (error) {
+    return res.status(500).json({ message: `verify delivery otp error ${error.message}` });
+    
+  }
+}
