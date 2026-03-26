@@ -110,7 +110,7 @@ function DeliveryBoy() {
         {!currentOrder && (
           <div className="bg-white rounded-2xl p-5 shadow-md w-[90%] border border-orange-100">
             <h1 className="text-lg font-bold mb-4 flex items-center gap-2">
-              Available Orders
+              📦Available Orders
             </h1>
             <div className="space-y-4">
               {availableAssignments?.length > 0 ? (
