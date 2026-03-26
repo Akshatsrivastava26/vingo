@@ -64,7 +64,7 @@ function TrackOrderPage() {
             <>
               {shopOrder.assignedDeliveryBoy ? (
                 <div className="text-sm text-gray-700">
-                  <p className="font-semibold">
+                   <p className="font-semibold">
                     <span className="">Delivery Boy Name:</span>
                     {shopOrder.assignedDeliveryBoy.fullName}
                   </p>

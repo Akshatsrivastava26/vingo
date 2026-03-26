@@ -127,3 +127,5 @@ export const getItemsByShop=async (req,res)=>{
         
     }
 }
+
+//to search the items in searchbar
