@@ -9,12 +9,31 @@ import userRouter from "./routes/userroutes.js";
 import shopRouter from "./routes/shoproutes.js";
 import itemRouter from "./routes/itemroutes.js";
 import orderRouter from "./routes/orderroutes.js";
+import http from "http";
+const allowedOrigin = ["http://localhost:5173", "http://localhost:5174"];
+
 
 import cors from "cors";
+import { Server } from "socket.io";
+import { socketHandler } from "./socket.js";
+
+
 const app = express();
 const port = process.env.PORT || 8000;
+const server = http.createServer(app);
 
-const allowedOrigin = ["http://localhost:5173", "http://localhost:5174"];
+const io=new Server(server,{
+  cors:{
+    origin: allowedOrigin,
+    credentials: true,
+    methods:["POST","GET"],
+  },
+})
+
+app.set("io", io);
+
+
+
 app.use(
   cors({
     origin: allowedOrigin,
@@ -32,6 +51,8 @@ app.use("/api/shop", shopRouter);
 app.use("/api/item", itemRouter);
 app.use("/api/order", orderRouter);
 
+socketHandler(io);
+
 const NODE_ENV = process.env.NODE_ENV;
 // make our app ready for deployment
 if (NODE_ENV === "production") {
@@ -46,7 +67,7 @@ if (NODE_ENV === "production") {
 app.get("/", (req, res) => {
   res.send("Vingo server is running");
 });
-app.listen(port, () => {
+server.listen(port, () => {
   connectDb();
   console.log(`Server is running on port: ${port}`);
 });

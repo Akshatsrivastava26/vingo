@@ -1,4 +1,4 @@
-import React from "react";
+
 import { Navigate, Route, Routes } from "react-router-dom";
 import { useSelector } from "react-redux";
 
@@ -24,18 +24,37 @@ import useGetShopByCity from "./hooks/useGetShopByCity";
 import useGetItemsByCity from "./hooks/useGetItemsByCity";
 import useGetMyOrders from "./hooks/useGetMyOrders";
 import useUpdateLocation from "./hooks/useUpdateLocation";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { io } from "socket.io-client";
+import { setSocket } from "./redux/userSlice";
 
 export const serverUrl = import.meta.env.VITE_BACKEND_URL;
 
 function App() {
   const { userData } = useSelector((state) => state.user);
   const loading = useGetCurrentUser();
+  const dispatch=useDispatch();
   useUpdateLocation();
   useGetCity();
   useGetMyShop();
   useGetShopByCity();
   useGetItemsByCity();
   useGetMyOrders();
+
+    useEffect(() => {
+    const socketInstance=io(serverUrl,{withCredentials:true})
+    dispatch(setSocket(socketInstance))
+    socketInstance.on("connect",()=>{
+      if(userData){
+        socketInstance.emit('identity',{userId:userData._id})
+      }
+    })
+    return ()=>{
+      socketInstance.disconnect();
+    }
+
+  },[userData?._id])
 
   if (loading) {
     return (
@@ -47,6 +66,9 @@ function App() {
       </div>
     );
   }
+
+
+
 
   return (
     <Routes>
