@@ -4,7 +4,7 @@ import axios from "axios";
 import { serverUrl } from "../App";
 import { useEffect } from "react";
 import { useState } from "react";
-import DeliveryBoyTracking from "./DeliveryBoyTracking";
+import DeliveryBoyTracking from "./DeliveryBoyTracking"; 
 
 function DeliveryBoy() {
   const { userData, socket } = useSelector((state) => state.user);
@@ -12,7 +12,34 @@ function DeliveryBoy() {
   const [currentOrder, setCurrentOrder] = useState();
   const [showOtpBox, setShowOtpBox] = useState(false);
   const [availableAssignments, setAvailableAssignments] = useState(null);
-  const [otp, setOtp] = useState("");
+  const [otp, setOtp] = useState("")
+  const [deliveryBoyLocation, setDeliveryBoyLocation] = useState(null);
+
+  useEffect(() => {
+    if(!socket || !userData.role=="deliveryBoy") return
+    let watchId;
+    if(navigator.geolocation){
+      watchId = navigator.geolocation.watchPosition((position)=>{
+        const latitude=position.coords.latitude;
+        const longitude=position.coords.longitude;
+        setDeliveryBoyLocation({lat:latitude,lon:longitude});
+        socket.emit("updateLocation",{
+          latitude,
+          longitude,
+          userId:userData._id,
+        })
+      }),
+      (error)=>{
+        console.log(error)
+      },
+      {
+        enableHighAccuracy:true,
+      }
+    }
+    return ()=>{
+      if(watchId)navigator.geolocation.clearWatch(watchId);
+    }
+  }, []);
 
   const getAssignments = async () => {
     try {
@@ -160,7 +187,7 @@ function DeliveryBoy() {
           </div>
         )}
 
-        {/* curren t order details */}
+        {/* current order details */}
         {currentOrder && (
           <div className="bg-white rounded-2xl p-5 shadow-md w-[90%] border border-orange-100">
             <h2 className="text-lg font-bold mb-3">📦Current Order</h2>
@@ -177,7 +204,15 @@ function DeliveryBoy() {
               </p>
             </div>
             {/* order tracking component */}
-            <DeliveryBoyTracking data={currentOrder} />
+            <DeliveryBoyTracking data={{
+              deliveryBoyLocation:deliveryBoyLocation ||{  
+                    lat: userData.assignedDeliveryBoy.location.coordinates[1],
+                    lon: userData.assignedDeliveryBoy.location.coordinates[0],
+                  },
+                  customerLocation: {
+                    lat: currentOrder.deliveryAddress.latitude,
+                    lon: currentOrder.deliveryAddress.longitude,
+            }},} />
             {!showOtpBox ? (
               <button
                 className="mt-4 w-full bg-green-500 text-white font-semibold py-2 px-4 rounded-xl shadow-md hover:bg-green-600 active:scale-95 transition-all duration-200"
