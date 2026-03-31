@@ -82,7 +82,7 @@ function FoodCard({ data }) {
 
       {/* price section && Cart Button */}
       <div className="flex items-center justify-between mt-auto p-3">
-        <span className="font-bold text-gray-900 text-lg">{data.price}</span>
+        <span className="font-bold text-gray-900 text-lg">₹{data.price}/-</span>
 
         {/* cart button */}
         <div className="flex items-center border rounded-full overflow-hidden shadow-sm">

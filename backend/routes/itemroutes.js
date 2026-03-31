@@ -9,6 +9,7 @@ import { deleteItem } from "../controllers/item.controllers.js";
 import { getItemByCity } from "../controllers/item.controllers.js";
 import { getItemsByShop } from "../controllers/item.controllers.js";
 import { searchItems } from "../controllers/item.controllers.js";
+import { rating } from "../controllers/item.controllers.js";
 
 
 
@@ -21,6 +22,7 @@ itemRouter.delete("/delete-item/:itemId",isAuth,deleteItem);
 itemRouter.get("/get-by-city/:city",isAuth,getItemByCity);
 itemRouter.get("/get-by-shop/:shopId",isAuth,getItemsByShop);
 itemRouter.get("/search-items",isAuth,searchItems)
+itemRouter.post("/rating",isAuth,rating)
 
 
 

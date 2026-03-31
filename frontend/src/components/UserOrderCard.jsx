@@ -1,8 +1,13 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import axios from 'axios';
+import { serverUrl } from '../App';
 
 function UserOrderCard({data}) {
   const navigate=useNavigate();
+
+  const [selectedRating, setSelectedRating] = useState({});//itemId:rating
   const formatDate = (dateString) => {
     const date=new Date(dateString);
     return date.toLocaleDateString('en-GB',{
@@ -10,6 +15,17 @@ function UserOrderCard({data}) {
       month:'short',
       year:'numeric',
     });
+  }
+
+  const handleRating=async(itemId,rating)=>{
+    try {
+      const result=await axios.post(`${serverUrl}/api/item/rating`,{itemId,rating},{withCredentials:true});
+      setSelectedRating(prev=>({...prev, [itemId]: rating}));
+
+    } catch (error) {
+      console.log("RATING ERROR:",error);
+      
+    }
   }
   return (
     <div className='bg-white rounded-lg shadow p-4 space-y-4'>
@@ -41,6 +57,17 @@ function UserOrderCard({data}) {
                 <img src={item.item.image} alt={item.name}  className='w-full h-24 object-cover rounded'/>
                 <p className='text-sm font-semibold mt-1'>{item.name}</p>
                 <p className='text-xs text-gray-500'>Qty: {item.quantity} x ₹{item.price} </p>
+
+                {/* rating of items */}
+                {shopOrder.status=="delivered" && (<div className='flex space-x-1 mt-2'>
+                  {[1,2,3,4,5].map((star) =>(
+                    <button className={`${selectedRating[item.item._id]>=star?"text-yellow-400":"text-gray-400"}`} onClick={()=>handleRating(item.item._id,star)}>★</button>
+
+                  ))}
+
+                </div>)}
+
+
               </div>
             ))}
           </div>
