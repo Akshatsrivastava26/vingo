@@ -137,13 +137,13 @@ function DeliveryBoy() {
       <div className="w-full max-w-[800px] flex flex-col gap-5 items-center">
         <div className="bg-white rounded-2xl shadow-md p-5 flex flex-col justify-start items-center w-[90%] border border-orange-100 text-center gap-2">
           <h1 className="text-xl font-bold text-[#ff4d2d]">
-            Welcome, {currentUser?.fullName}!
+            Welcome, {userData?.fullName}!
           </h1>
           <p className="text-[#ff4d2d]">
             <span className="font-semibold">Latitude:</span>{" "}
-            {currentUser?.location?.coordinates?.[1] ?? "-"},{" "}
+            {deliveryBoyLocation?.lat},{" "}
             <span className="font-semibold">Longitude:</span>{" "}
-            {currentUser?.location?.coordinates?.[0] ?? "-"}
+            {deliveryBoyLocation?.lon}
           </p>
         </div>
 
@@ -212,7 +212,7 @@ function DeliveryBoy() {
                   customerLocation: {
                     lat: currentOrder.deliveryAddress.latitude,
                     lon: currentOrder.deliveryAddress.longitude,
-            }},} />
+            }}} />
             {!showOtpBox ? (
               <button
                 className="mt-4 w-full bg-green-500 text-white font-semibold py-2 px-4 rounded-xl shadow-md hover:bg-green-600 active:scale-95 transition-all duration-200"
