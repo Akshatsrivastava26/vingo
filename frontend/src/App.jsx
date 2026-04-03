@@ -1,4 +1,3 @@
-
 import { Navigate, Route, Routes } from "react-router-dom";
 import { useSelector } from "react-redux";
 
@@ -33,8 +32,9 @@ export const serverUrl = import.meta.env.VITE_BACKEND_URL;
 
 function App() {
   const { userData } = useSelector((state) => state.user);
+  const userId = userData?.user?._id || userData?._id;
   const loading = useGetCurrentUser();
-  const dispatch=useDispatch();
+  const dispatch = useDispatch();
   useUpdateLocation();
   useGetCity();
   useGetMyShop();
@@ -42,19 +42,18 @@ function App() {
   useGetItemsByCity();
   useGetMyOrders();
 
-    useEffect(() => {
-    const socketInstance=io(serverUrl,{withCredentials:true})
-    dispatch(setSocket(socketInstance))
-    socketInstance.on("connect",()=>{
-      if(userData){
-        socketInstance.emit('identity',{userId:userData._id})
+  useEffect(() => {
+    const socketInstance = io(serverUrl, { withCredentials: true });
+    dispatch(setSocket(socketInstance));
+    socketInstance.on("connect", () => {
+      if (userId) {
+        socketInstance.emit("identity", { userId });
       }
-    })
-    return ()=>{
+    });
+    return () => {
       socketInstance.disconnect();
-    }
-
-  },[userData?._id])
+    };
+  }, [userId, dispatch]);
 
   if (loading) {
     return (
@@ -66,9 +65,6 @@ function App() {
       </div>
     );
   }
-
-
-
 
   return (
     <Routes>
@@ -122,11 +118,9 @@ function App() {
       />
       <Route
         path="/shop/:shopId"
-        element={userData ? <Shop/> : <Navigate to="/signin" />}
+        element={userData ? <Shop /> : <Navigate to="/signin" />}
       />
     </Routes>
-
-    
   );
 }
 export default App;

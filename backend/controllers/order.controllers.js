@@ -271,7 +271,15 @@ export const updateOrderStatus = async (req, res) => {
   try {
     const { orderId, shopId } = req.params;
     const { status } = req.body;
+
+    if (!status) {
+      return res.status(400).json({ message: "Status is required" });
+    }
+
     const order = await Order.findById(orderId);
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
 
     const shopOrder = await order.shopOrders.find((o) => o.shop == shopId);
     if (!shopOrder) {
@@ -282,7 +290,7 @@ export const updateOrderStatus = async (req, res) => {
     let deliveryBoysPayload = [];
     if (status == "out for delivery" && !shopOrder.assignment) {
       const { longitude, latitude } = order.deliveryAddress;
-      const nearByDeliveryBoys = await User.find({
+      let nearByDeliveryBoys = await User.find({
         role: "deliveryBoy",
         location: {
           $near: {
@@ -291,6 +299,19 @@ export const updateOrderStatus = async (req, res) => {
           },
         },
       });
+
+      // Fallback 1: if no nearby by geo index/location, consider online delivery boys.
+      if (!nearByDeliveryBoys.length) {
+        nearByDeliveryBoys = await User.find({
+          role: "deliveryBoy",
+          isOnline: true,
+        });
+      }
+
+      // Fallback 2: if still empty, consider all delivery boys.
+      if (!nearByDeliveryBoys.length) {
+        nearByDeliveryBoys = await User.find({ role: "deliveryBoy" });
+      }
 
       const nearByIds = nearByDeliveryBoys.map((b) => b._id);
       const busyIds = await DeliveryAssignment.find({
@@ -327,7 +348,7 @@ export const updateOrderStatus = async (req, res) => {
         fullname: b.fullName,
         longitude: b.location.coordinates?.[0],
         latitude: b.location.coordinates?.[1],
-        mobile: b.mobile,
+        mobile: b.mobileNumber,
       }));
 
       await deliveryAssignment.populate("order");
@@ -357,7 +378,6 @@ export const updateOrderStatus = async (req, res) => {
       }
     }
 
-    await shopOrder.save();
     await order.save();
     const updatedShopOrder = order.shopOrders.find((o) => o.shop == shopId);
     await order.populate("shopOrders.shop", "name");
@@ -369,11 +389,11 @@ export const updateOrderStatus = async (req, res) => {
 
     const io = req.app.get("io");
     if (io) {
-      const userSocketId = order.user.socketId;
+      const userSocketId = order.user?.socketId;
       if (userSocketId) {
         io.to(userSocketId).emit("update-status", {
           orderId: order._id,
-          shopId: updatedShopOrder.shop._id,
+          shopId: updatedShopOrder?.shop?._id || updatedShopOrder?.shop,
           status: updatedShopOrder.status,
           userId: order.user._id,
         });
@@ -385,7 +405,7 @@ export const updateOrderStatus = async (req, res) => {
       shopOrder: updatedShopOrder,
       assignedDeliveryBoy: updatedShopOrder?.assignedDeliveryBoy,
       availableBoys: deliveryBoysPayload,
-      assignment: updatedShopOrder?.assignment._id,
+      assignment: updatedShopOrder?.assignment?._id,
     });
   } catch (error) {
     return res
@@ -431,6 +451,18 @@ export const acceptOrder = async (req, res) => {
     if (!assignment) {
       return res.status(400).json({ message: "Assignment not found" });
     }
+    if (
+      assignment.status === "assigned" &&
+      String(assignment.assignedTo) === String(req.userId)
+    ) {
+      const existingOrder = await Order.findById(assignment.order);
+      return res.status(200).json({
+        message: "Order already accepted",
+        order: existingOrder,
+        assignment,
+      });
+    }
+
     if (assignment.status !== "broadcasted") {
       return res.status(400).json({ message: "Assignment is expired" });
     }
@@ -481,7 +513,7 @@ export const getCurrentOrder = async (req, res) => {
       });
 
     if (!assignment) {
-      return res.status(404).json({ message: "No current order found" });
+      return res.status(200).json(null);
     }
     if (!assignment.order) {
       return res.status(404).json({ message: "Order details not found" });

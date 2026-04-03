@@ -1,30 +1,37 @@
-import React from 'react'
-import { useEffect } from 'react'
-import axios from 'axios';
-import { serverUrl } from '../App.jsx';
-import { useDispatch } from 'react-redux';
-import { setMyShopData } from '../redux/ownerSlice.js';
-import { useSelector } from 'react-redux';
-
-
-
+import React from "react";
+import { useEffect } from "react";
+import axios from "axios";
+import { serverUrl } from "../App.jsx";
+import { useDispatch } from "react-redux";
+import { setMyShopData } from "../redux/ownerSlice.js";
+import { useSelector } from "react-redux";
 
 function useGetMyShop() {
-    const dispatch=useDispatch();
-    const {userData}=useSelector(state=>state.user)
-    useEffect(() => {
-        const fetchShop =async ()=>{
-            try {
-                const result = await axios.get(`${serverUrl}/api/shop/get-my`,{withCredentials:true});
-                dispatch(setMyShopData(result.data));
+  const dispatch = useDispatch();
+  const { userData } = useSelector((state) => state.user);
+  const userRole = userData?.user?.role || userData?.role;
 
-            } catch (error) {
-                console.log(error);
-                
-            }
+  useEffect(() => {
+    if (!userData || userRole !== "owner") {
+      dispatch(setMyShopData(null));
+      return;
+    }
+
+    const fetchShop = async () => {
+      try {
+        const result = await axios.get(`${serverUrl}/api/shop/get-my`, {
+          withCredentials: true,
+        });
+        dispatch(setMyShopData(result.data));
+      } catch (error) {
+        if (![400, 401].includes(error?.response?.status)) {
+          console.log(error);
         }
-        fetchShop();
-    }, [userData, dispatch]);
+        dispatch(setMyShopData(null));
+      }
+    };
+    fetchShop();
+  }, [userData, userRole, dispatch]);
 }
 
-export default useGetMyShop
+export default useGetMyShop;
