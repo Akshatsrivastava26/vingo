@@ -348,7 +348,7 @@ function DeliveryBoy() {
         {!currentOrder && (
           <section className="section-card p-5 sm:p-6">
             <h2 className="text-xl font-bold mb-4 text-(--text-primary)">
-              Available Orders
+              Available Orders📦
             </h2>
             {assignmentMessage && (
               <p className="text-sm text-(--brand-2) mb-3">
@@ -371,7 +371,7 @@ function DeliveryBoy() {
                         {a?.deliveryAddress?.text || "No address"}
                       </p>
                       <p className="text-xs text-(--text-subtle)">
-                        {a?.items?.length || 0} items | â‚¹{a?.subtotal || 0}
+                        {a?.items?.length || 0} items | ₹{a?.subtotal || 0}
                       </p>
                     </div>
                     <BrandButton onClick={() => acceptOrder(a.assignmentId)}>
@@ -381,7 +381,7 @@ function DeliveryBoy() {
                 ))
               ) : (
                 <p className="text-(--text-subtle) text-sm">
-                  No available orders.
+                  No available orders📦
                 </p>
               )}
             </div>
